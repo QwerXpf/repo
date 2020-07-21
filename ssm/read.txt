@@ -1,0 +1,48 @@
+整合环境思路:
+一.Dao层
+        1.数据库的准备 测试dao是否正确
+        2.jar包
+        3.配置文件
+            1.SqlMapConfig.xml  空的
+            2.AccountMapper.xml  sql语句
+            3.applicationContext-dao.xml
+                1)加载外部数据库信息 jdbc.properites
+                2)数据源的配置 druid
+                3)SqlSessionFactoryBean  (加载dataSource , 加载SqlMapConfig.xml ,起别名)
+                4)Mapper包扫描
+
+            4.jdbc.properties
+            5.log4j.properties
+        4.测试
+            AccountMapper接口
+            AccountMapper.xml sql
+            Test测试接口
+
+
+    二.service层
+        1.配置
+          applicationContext-service.xml
+              1)包扫描service包
+              2)注解的事务 (创建平台事务管理器, 创建注解驱动,挂载平台事务管理器)
+              3)方法的实现类上加@Transactional
+
+        2.测试
+            AccountService 接口
+            transfer(inName outName money)
+            实现类
+            .....
+            测试类实现类 (事务是否可用)
+
+    三.controller环境搭建
+        1.复制webapp目录
+
+        2.配置
+            springmvc.xml   扫描controller包  配置3大组件
+
+            web.xml
+                1.监听器  加载spring的所有配置文件
+                2.前端控制器  加载springmvc.xml
+
+        3.测试
+            编写AccountController 类 编写方法  ,调用serivce转账..
+            用户通过浏览器: localhost:8080/transfer.action?inName=aaa&outName=bbb&money=300
